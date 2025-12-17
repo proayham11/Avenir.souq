@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avenir.Souq - متجر التقنيات المستقبلية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset ونظام الألوان */
+        :root {
+            --black: #0B0B0B;
+            --dark-gray: #1E1E1E;
+            --gray: #2A2A2A;
+            --gold: #E5B839;
+            --light-gray: #888888;
+            --white: #F5F5F5;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--black);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            height: 80px;
+            border-bottom: 1px solid var(--dark-gray);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+        
+        .logo img {
+            height: 100%;
+            width: auto;
+        }
+        
+        .nav ul {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--light-gray);
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav a:hover {
+            color: var(--white);
+        }
+        
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav a:hover::after {
+            width: 100%;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-icon svg {
+            fill: var(--light-gray);
+            transition: fill 0.3s ease;
+        }
+        
+        .cart-icon:hover svg {
+            fill: var(--white);
+        }
+        
+                
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--dark-gray));
+            z-index: 1;
+        }
+        
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+        
+        .hero-content {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            z-index: 2;
+            max-width: 400px;
+        }
+        
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--light-gray);
+            font-weight: 400;
+        }
+        
+        /* Featured Products */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 60px 0 30px;
+            text-align: center;
+            color: var(--white);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 80px;
+        }
+        
+        .product-card {
+            background-color: var(--dark-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            border: 1px solid transparent;
+            position: relative;
+            height: 100%;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background-color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-name {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+        
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--gold);
+        }
+        
+        /* Categories */
+        .categories {
+            margin: 80px 0;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .category-card {
+            background-color: var(--dark-gray);
+            border-radius: 8px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .category-card:hover {
+            border-color: var(--gray);
+            transform: translateY(-2px);
+        }
+        
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .category-icon svg {
+            fill: var(--light-gray);
+            transition: fill 0.3s ease;
+        }
+        
+        .category-card:hover .category-icon svg {
+            fill: var(--gold);
+        }
+        
+        .category-name {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--white);
+        }
+        
+        /* Trust Section */
+        .trust-section {
+            margin: 80px 0;
+            background-color: var(--dark-gray);
+            padding: 50px 0;
+            border-radius: 8px;
+        }
+        
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .trust-item {
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .trust-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .trust-icon svg {
+            fill: var(--gold);
+        }
+        
+        .trust-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--white);
+        }
+        
+        .trust-desc {
+            font-size: 0.9rem;
+            color: var(--light-gray);
+            line-height: 1.5;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-gray);
+            border-top: 1px solid var(--gold);
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 35px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo img {
+            height: 100%;
+            width: auto;
+        }
+        
+        .footer-about {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+        
+        .footer-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray);
+            color: var(--light-gray);
+            font-size: 0.85rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .products-grid,
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .trust-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                height: 64px;
+            }
+            
+            .hero {
+                margin-top: 64px;
+                height: 400px;
+            }
+            
+            .hero-content {
+                bottom: 20px;
+                right: 20px;
+                max-width: 300px;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav {
+                position: fixed;
+                top: 64px;
+                right: -100%;
+                width: 80%;
+                height: calc(100vh - 64px);
+                background-color: var(--dark-gray);
+                padding: 30px;
+                transition: right 0.3s ease;
+                z-index: 999;
+            }
+            
+            .nav.active {
+                right: 0;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .products-grid,
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                height: 350px;
+            }
+            
+            .hero-content {
+                max-width: 250px;
+            }
+            
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .products-grid,
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+        
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+        
+        .mt-80 {
+            margin-top: 80px;
+        }
+        
+        .gold-text {
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="without name & re BG BLACK.png" alt="">
+            </div>
+            
+            <nav class="nav" id="mainNav">
+                <ul>
+                    <li><a href="#products">المنتجات المميزة</a></li>
+                    <li><a href="#categories">الفئات</a></li>
+                    <li><a href="#trust">لماذا نحن</a></li>
+                    <li><a href="#contact">اتصل بنا</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <a href="https://wa.me/963964515662" target="_blank" 
+                   style="
+                       display: inline-block;
+                       background-color: #25D366; /* لون واتساب الأخضر */
+                       color: #ffffff !important; /* لون النص أبيض */
+                       text-decoration: none; /* إزالة الخط تحت الرابط */
+                       padding: 10px 20px; /* مساحة داخلية للزر */
+                       border-radius: 50px; /* جعل الزر دائري الأطراف بالكامل */
+                       font-weight: bold; /* خط عريض */
+                       font-size: 14px;
+                       margin-left: 50px; /* مسافة لفصل الزر عن سلة المشتريات */
+                       /* يرجى ملاحظة: تأثيرات الـ hover لا تعمل في التنسيق المدمج */
+                   ">
+                    تواصل معنا
+                </a>
+                <div class="cart-icon">
+                    <div class="cart-count"></div>
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                    </svg>
+                </div>
+                
+                <button class="menu-toggle" id="menuToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 6H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 18H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+            
+            <nav class="nav" id="mainNav">
+                <ul>
+                    <li><a href="#products">المنتجات </a></li>
+                    <li><a href="#categories">الفئات</a></li>
+                    <li><a href="#trust">لماذا نحن</a></li>
+                    <li><a href="#contact">اتصل بنا</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <div class="cart-icon">
+                    <div class="cart-count">3</div>
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                    </svg>
+                </div>
+                
+                <button class="menu-toggle" id="menuToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 6H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 18H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="vfg.jpg" alt="منتج تقني متقدم" class="hero-image">
+        <div class="hero-content">
+            <h1 class="hero-title">التقنية. بس أفضل</h1>
+            <p class="hero-subtitle">منتجات مختارة بعناية، لناس يعرفون شو بدهم</p>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section id="products" class="container">
+        <h2 class="section-title">المنتجات </h2>
+        <div class="products-grid">
+    
+    <a href="product-detail.html?id=1" class="product-card">
+        <div class="product-image">
+            <img src="hub1.jpg" alt="1">
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">USB C HUB, 10-in-1 </h3>
+            <span class="product-price">$25</span>
+        </div>
+    </a>
+    
+    <a href="product-detail.html?id=2" class="product-card">
+        <div class="product-image">
+            <img src="1.png" alt="">
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">Wireless Lavalir Microphone </h3>
+            <span class="product-price">$30</span>
+        </div>
+    </a>
+    
+    <a href="product-detail.html?id=3" class="product-card">
+        <div class="product-image">
+            <img src="d1.webp" alt="">
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">D10S 129 LED RGB Video Light</h3>
+            <span class="product-price">$18</span>
+        </div>
+    </a>
+    
+    <a href="product-detail.html?id=4" class="product-card">
+        <div class="product-image">
+            <img src="gym1.jpg" alt="كاميرا احترافية">
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">Gym Lump</h3>
+            <span class="product-price">$13</span>
+        </div>
+    </a>
+</div>
+
+    <!-- Categories -->
+    <section id="categories" class="container categories">
+        <h2 class="section-title">تصفح حسب الفئة</h2>
+        <div class="categories-grid">
+            <!-- Category 1 -->
+            <div class="category-card">
+                <div class="category-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 12L24 4L32 12M12 16H36M12 40H36C38.2091 40 40 38.2091 40 36V16C40 13.7909 38.2091 12 36 12H12C9.79086 12 8 13.7909 8 16V36C8 38.2091 9.79086 40 12 40Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="category-name">الأجهزة الذكية</h3>
+            </div>
+            
+            <!-- Category 2 -->
+            <div class="category-card">
+                <div class="category-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 8H32C34.2091 8 36 9.79086 36 12V36C36 38.2091 34.2091 40 32 40H16C13.7909 40 12 38.2091 12 36V12C12 9.79086 13.7909 8 16 8Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M24 32V36" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="category-name">الهواتف والأجهزة اللوحية</h3>
+            </div>
+            
+            <!-- Category 3 -->
+            <div class="category-card">
+                <div class="category-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 12V8M12 24H8M24 40V36M40 24H36M17 17L14 14M31 17L34 14M17 31L14 34M31 31L34 34M32 24C32 28.4183 28.4183 32 24 32C19.5817 32 16 28.4183 16 24C16 19.5817 19.5817 16 24 16C28.4183 16 32 19.5817 32 24Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="category-name">الأجهزة المنزلية الذكية</h3>
+            </div>
+            
+            <!-- Category 4 -->
+            <div class="category-card">
+                <div class="category-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 16H32M16 24H32M16 32H24M8 8H40C42.2091 8 44 9.79086 44 12V36C44 38.2091 42.2091 40 40 40H8C5.79086 40 4 38.2091 4 36V12C4 9.79086 5.79086 8 8 8Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="category-name">ملحقات التقنية</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section id="trust" class="container trust-section">
+        <h2 class="section-title">لماذا تثق بـ Avenir.Souq</h2>
+        <div class="trust-grid">
+            <!-- Trust Item 1 -->
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 24H32M24 16V32M8 12V36C8 38.2091 9.79086 40 12 40H36C38.2091 40 40 38.2091 40 36V12C40 9.79086 38.2091 8 36 8H12C9.79086 8 8 9.79086 8 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="trust-title">مدفوعات آمنة
+                    قريبا...
+        
+                </h3>
+                <p class="trust-desc">نظام دفع مشفر بالكامل مع خيارات متعددة وآمنة</p>
+            </div>
+            
+            <!-- Trust Item 2 -->
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M40 16L24 8L8 16V32L24 40L40 32V16Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M24 24L30 18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M24 24V32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="trust-title">توصيل سريع</h3>
+                <p class="trust-desc">توصيل خلال 24-48 ساعة في المناطق الرئيسية</p>
+            </div>
+            
+            <!-- Trust Item 3 -->
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 24C20 21.7909 21.7909 20 24 20C26.2091 20 28 21.7909 28 24C28 26.2091 26.2091 28 24 28C21.7909 28 20 26.2091 20 24Z" stroke-width="2"/>
+                        <path d="M24 4V8M24 40V44M12 12L14 14M34 34L36 36M12 36L14 34M34 14L36 12M8 24H12M36 24H40M4 24H8M44 24H40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="trust-title">متجر تقني موثوق</h3>
+                <p class="trust-desc">نختار منتجاتنا بعناية لتناسب المستخدم المحترف</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        
+                            <div class="logo">
+                                <img src="without name & re BG BLACK.png" alt="">
+                            </div>
+                        </svg>
+                    </div>
+                    <p class="footer-about">
+                        Avenir.Souq هو وجهتك المثلى للمنتجات التقنية الفاخرة والمختارة بعناية. نحن نؤمن بالتقنية النظيفة والتصميم الواثق.
+                    </p>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-heading">روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="#products">المنتجات المميزة</a></li>
+                        <li><a href="#categories">جميع الفئات</a></li>
+                        <li><a href="#trust">لماذا نحن</a></li>
+                        <li><a href="#contact">الدعم الفني</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-heading">المساعدة</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">الشحن والتوصيل</a></li>
+                        <li><a href="#">الاسترجاع والاستبدال</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="footer-heading">تواصل معنا</h3>
+                    <ul class="footer-links">
+                    
+                        <li><a href="tel:+963 64 515 662">+963 64 515 662</a></li>
+                        <li>دمشق,سوريا</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Avenir.Souq. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+            });
+        });
+        
+        // Product hover effect enhancement
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.zIndex = '10';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.zIndex = '1';
+            });
+        });
+        
+    
+    </script>
+</body>
+</html>
