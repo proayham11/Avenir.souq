@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رفع الصور من اللابتوب - Avenir.Souq</title>
+    <style>
+        :root {
+            --black: #0B0B0B;
+            --dark-gray: #1E1E1E;
+            --gold: #E5B839;
+            --white: #F5F5F5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--dark-gray);
+        }
+        
+        .header h1 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .upload-area {
+            border: 3px dashed var(--gold);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 20px 0;
+            background-color: rgba(229, 184, 57, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            background-color: rgba(229, 184, 57, 0.1);
+            border-color: #d4a32f;
+        }
+        
+        .upload-area.dragover {
+            background-color: rgba(229, 184, 57, 0.2);
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--gold);
+        }
+        
+        .upload-btn {
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background-color: #d4a32f;
+        }
+        
+        .secondary-btn {
+            background-color: var(--dark-gray);
+            color: var(--white);
+            border: 1px solid var(--gray);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .preview-container {
+            margin: 30px 0;
+            display: none;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .preview-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--dark-gray);
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .remove-preview {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background-color: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .progress-container {
+            background-color: var(--dark-gray);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #2A2A2A;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--gold);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .result-container {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .link-box {
+            background-color: var(--dark-gray);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-right: 4px solid var(--gold);
+        }
+        
+        .link-box input {
+            width: 100%;
+            background-color: var(--black);
+            color: var(--gold);
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .copy-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .info-note {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📤 رفع الصور من اللابتوب</h1>
+            <p>اختر الصور من جهازك لاستخدامها في المنتج</p>
+        </div>
+        
+        <!-- منطقة السحب والإفلات -->
+        <div class="upload-area" id="dropArea">
+            <div class="upload-icon">📁</div>
+            <h3 style="color: var(--gold); margin-bottom: 10px;">اسحب وأفلت الصور هنا</h3>
+            <p style="color: #888; margin: 15px 0;">أو</p>
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                اختر صور من جهازك
+            </button>
+            <input type="file" id="fileInput" class="file-input" multiple accept="image/*">
+            <p class="info-note">
+                يدعم: JPG, PNG, GIF, WEBP<br>
+                الحد الأقصى: 10 صور - 5MB لكل صورة
+            </p>
+        </div>
+        
+        <!-- معاينة الصور -->
+        <div class="preview-container" id="previewContainer">
+            <h3 style="color: var(--gold); margin-bottom: 15px;">الصور المختارة:</h3>
+            <div class="preview-grid" id="imagePreview"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="upload-btn" onclick="uploadImages()" id="uploadBtn">
+                    ⬆️ رفع الصور
+                </button>
+                <button class="upload-btn secondary-btn" onclick="clearSelection()">
+                    🗑️ مسح الكل
+                </button>
+            </div>
+        </div>
+        
+        <!-- شريط التقدم -->
+        <div class="progress-container" id="progressContainer">
+            <h4 style="color: var(--gold); margin-bottom: 10px;">جاري رفع الصور...</h4>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div id="progressText" style="color: #888; text-align: center; font-size: 0.9rem;">
+                جاري الرفع: <span id="currentFile">0</span>/<span id="totalFiles">0</span>
+            </div>
+        </div>
+        
+        <!-- النتائج -->
+        <div class="result-container" id="resultContainer">
+            <h3 style="color: #2ecc71; margin-bottom: 20px;">✅ تم رفع الصور بنجاح!</h3>
+            <div id="uploadedLinks">
+                <!-- ستظهر الروابط هنا -->
+            </div>
+            
+            <div class="action-buttons">
+                <button class="upload-btn" onclick="useImages()" style="background-color: #25D366;">
+                    💾 استخدام الصور في المنتج
+                </button>
+                <button class="upload-btn secondary-btn" onclick="window.close()">
+                    ✖️ إغلاق النافذة
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تحميل السكريبت -->
+    <script src="upload-manager.js"></script>
+    <script src="config.js"></script>
+    
+    <script>
+        // تهيئة النظام
+        document.addEventListener('DOMContentLoaded', function() {
+            initUploadSystem();
+        });
+    </script>
+</body>
+</html>

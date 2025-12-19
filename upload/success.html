@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم الرفع بنجاح - Avenir.Souq</title>
+    <style>
+        :root {
+            --black: #0B0B0B;
+            --dark-gray: #1E1E1E;
+            --gold: #E5B839;
+            --white: #F5F5F5;
+            --green: #25D366;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .success-container {
+            background-color: var(--dark-gray);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            border: 2px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(229, 184, 57, 0.1);
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: var(--gold);
+            animation: bounce 1s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+        
+        .message {
+            color: #888;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .links-container {
+            background: rgba(42, 42, 42, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .link-item {
+            background: var(--black);
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border-right: 3px solid var(--gold);
+            text-align: right;
+            word-break: break-all;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+        
+        .btn-primary:hover {
+            background-color: #d4a32f;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #444;
+            color: var(--white);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #555;
+        }
+        
+        .btn-success {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #1da851;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(229, 184, 57, 0.1);
+            border-radius: 8px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--gold);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .auto-close {
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        /* Scrollbar styling */
+        .links-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .links-container::-webkit-scrollbar-track {
+            background: var(--black);
+            border-radius: 4px;
+        }
+        
+        .links-container::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">✅</div>
+        
+        <h1>تم الرفع بنجاح!</h1>
+        
+        <div class="message">
+            تم رفع الصور إلى GitHub بنجاح. يمكنك الآن استخدام الروابط أدناه في منتجك.
+        </div>
+        
+        <div class="stats" id="stats">
+            <!-- سيتم ملؤه بالجافاسكريبت -->
+        </div>
+        
+        <div class="links-container" id="linksContainer">
+            <!-- الروابط ستظهر هنا -->
+        </div>
+        
+        <div class="actions">
+            <button class="btn btn-success" onclick="copyAllLinks()">
+                📋 نسخ جميع الروابط
+            </button>
+            <button class="btn btn-primary" onclick="goToAddProduct()">
+                ➕ العودة لإضافة المنتج
+            </button>
+            <button class="btn btn-secondary" onclick="closeWindow()">
+                ✕ إغلاق النافذة
+            </button>
+        </div>
+        
+        <div class="auto-close" id="autoCloseTimer">
+            ستغلق هذه النافذة تلقائياً خلال: <span id="countdown">10</span> ثواني
+        </div>
+    </div>
+
+    <script>
+        // جلب الروابط من localStorage
+        const uploadedLinks = JSON.parse(localStorage.getItem('uploaded_image_links') || '[]');
+        
+        // تحديث الإحصائيات
+        document.getElementById('stats').innerHTML = `
+            <div class="stat-item">
+                <div class="stat-number">${uploadedLinks.length}</div>
+                <div class="stat-label">صورة مرفوعة</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">${new Date().toLocaleDateString('ar-SA')}</div>
+                <div class="stat-label">تاريخ الرفع</div>
+            </div>
+        `;
+        
+        // عرض الروابط
+        const linksContainer = document.getElementById('linksContainer');
+        if (uploadedLinks.length > 0) {
+            linksContainer.innerHTML = uploadedLinks.map((link, index) => `
+                <div class="link-item">
+                    <strong>الصورة ${index + 1}:</strong><br>
+                    <small style="color: #E5B839;">${link}</small>
+                    <button onclick="copySingleLink('${link}')" 
+                            style="background: #444; color: white; border: none; padding: 3px 8px; border-radius: 3px; margin-top: 5px; cursor: pointer;">
+                        نسخ
+                    </button>
+                </div>
+            `).join('');
+        } else {
+            linksContainer.innerHTML = '<p style="color: #888; text-align: center;">لا توجد روابط مرفوعة</p>';
+        }
+        
+        // دوال التحكم
+        function copyAllLinks() {
+            const allLinks = uploadedLinks.join('\n\n');
+            navigator.clipboard.writeText(allLinks).then(() => {
+                alert('✅ تم نسخ جميع الروابط إلى الحافظة!');
+            });
+        }
+        
+        function copySingleLink(link) {
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ تم نسخ الرابط!');
+            });
+        }
+        
+        function goToAddProduct() {
+            // إرسال الروابط للصفحة الأصلية
+            window.opener.postMessage({
+                type: 'uploaded_images',
+                links: uploadedLinks
+            }, '*');
+            
+            // إغلاق النافذة
+            closeWindow();
+        }
+        
+        function closeWindow() {
+            window.close();
+        }
+        
+        // عد تنازلي للإغلاق التلقائي
+        let countdown = 10;
+        const countdownElement = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            
+            if (countdown <= 0) {
+                clearInterval(timer);
+                goToAddProduct();
+            }
+        }, 1000);
+        
+        // إلغاء العد التنازلي إذا تحرك الماوس
+        document.addEventListener('mousemove', () => {
+            clearInterval(timer);
+            document.getElementById('autoCloseTimer').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
