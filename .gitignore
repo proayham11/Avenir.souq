@@ -1,0 +1,49 @@
+echo # ============================================ > .gitignore
+echo # ملف Gitignore لـ Avenir.Souq >> .gitignore
+echo # ============================================ >> .gitignore
+echo >> .gitignore
+echo # ⚠️ ملفات البيئة والسرية (لا ترفع أبداً) >> .gitignore
+echo .env >> .gitignore
+echo .env.local >> .gitignore
+echo .env.development >> .gitignore
+echo .env.production >> .gitignore
+echo .env.test >> .gitignore
+echo >> .gitignore
+echo # 📦 مجلدات التبعيات (كبيرة، ستتم إعادة بنائها) >> .gitignore
+echo node_modules/ >> .gitignore
+echo npm-debug.log* >> .gitignore
+echo yarn-debug.log* >> .gitignore
+echo yarn-error.log* >> .gitignore
+echo >> .gitignore
+echo # 💾 ملفات النظام >> .gitignore
+echo .DS_Store >> .gitignore
+echo Thumbs.db >> .gitignore
+echo desktop.ini >> .gitignore
+echo >> .gitignore
+echo # 🔧 ملفات التطوير >> .gitignore
+echo .vscode/ >> .gitignore
+echo .idea/ >> .gitignore
+echo *.sublime-project >> .gitignore
+echo *.sublime-workspace >> .gitignore
+echo >> .gitignore
+echo # 📁 مجلدات التحميلات المؤقتة >> .gitignore
+echo uploads/ >> .gitignore
+echo temp/ >> .gitignore
+echo cache/ >> .gitignore
+echo >> .gitignore
+echo # 📝 ملفات Log >> .gitignore
+echo *.log >> .gitignore
+echo logs/ >> .gitignore
+echo >> .gitignore
+echo # 🏗️ ملفات Build >> .gitignore
+echo dist/ >> .gitignore
+echo build/ >> .gitignore
+echo out/ >> .gitignore
+echo >> .gitignore
+echo # 📊 ملفات قاعدة البيانات (إذا كان لديك) >> .gitignore
+echo *.db >> .gitignore
+echo *.sqlite >> .gitignore
+echo >> .gitignore
+echo # 🎯 ملفات خاصة بـ Avenir.Souq >> .gitignore
+echo # products.json # إذا كنت تستخدم ملف تخزين محلي >> .gitignore
+echo # admin-password.txt # إذا كان لديك ملف كلمات مرور >> .gitignore

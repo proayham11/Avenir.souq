@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">إضافة منتج جديد - Avenir.Souq</title>
+    <style>
+        :root {
+            --black: #0B0B0B;
+            --dark-gray: #1E1E1E;
+            --gray: #2A2A2A;
+            --gold: #E5B839;
+            --light-gray: #888888;
+            --white: #F5F5F5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .header h1 {
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .form-container {
+            background-color: var(--dark-gray);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid var(--gray);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--white);
+            font-weight: 500;
+        }
+        
+        label.required::after {
+            content: " *";
+            color: #ff6b6b;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--black);
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            color: var(--white);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+        
+        .btn-primary:hover {
+            background-color: #d4a32f;
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray);
+            color: var(--white);
+            margin-left: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+        
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid var(--gray);
+        }
+        
+        
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background-color: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .color-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: var(--black);
+            border-radius: 5px;
+        }
+        
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid var(--white);
+        }
+        
+        .remove-color {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .add-btn {
+            background-color: var(--gray);
+            color: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        
+        .add-btn:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .error {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+        
+        .info-note {
+            color: var(--light-gray);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .image-url {
+            margin-bottom: 10px;
+        }
+        
+        .spec-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .spec-row input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- أضف في مكان مناسب بعد السطر 150 تقريباً -->
+<div class="form-group">
+    <label>رفع الصور من اللابتوب:</label>
+    <div style="text-align: center; margin: 20px 0;">
+        <button type="button" id="uploadLocalBtn" 
+                style="background: #E5B839; color: black; padding: 15px 30px; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;">
+            📤 رفع صور من اللابتوب
+        </button>
+        <p style="color: #888; margin-top: 10px; font-size: 0.9rem;">
+            اختر صوراً من جهازك لرفعها مباشرة
+        </p>
+    </div>
+</div>
+
+<!-- أضف في نهاية الـ <script> قبل </script> -->
+<script>
+// دالة لفتح نافذة رفع الصور
+document.getElementById('uploadLocalBtn').addEventListener('click', function() {
+    // حفظ البيانات الحالية مؤقتاً
+    const productData = {
+        name: document.getElementById('name').value,
+        price: document.getElementById('price').value,
+        description: document.getElementById('description').value
+    };
+    localStorage.setItem('temp_product_data', JSON.stringify(productData));
+    
+    // فتح نافذة الرفع
+    window.open('upload/local-upload.html', 'uploadWindow', 'width=700,height=600,scrollbars=yes');
+});
+
+// استقبال الصور المرفوعة
+window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'images_uploaded') {
+        const uploadedImages = event.data.images;
+        
+        // إضافة الروابط للحقول
+        const imagesContainer = document.getElementById('images-container');
+        uploadedImages.forEach(url => {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'image-url';
+            input.value = url;
+            input.oninput = updateImagePreviews;
+            imagesContainer.appendChild(input);
+        });
+        
+        // تحديث المعاينة
+        updateImagePreviews();
+        
+        alert(`✅ تم إضافة ${uploadedImages.length} صورة بنجاح!`);
+    }
+});
+</script>
+    <div class="container">
+        <div class="header">
+            <h1 id="page-title">إضافة منتج جديد</h1>
+            <p>املأ النموذج أدناه لإضافة منتج جديد إلى المتجر</p>
+        </div>
+        
+        <div id="message" class="message" style="display: none;"></div>
+        
+        <div class="form-container">
+            <form id="product-form">
+                <div class="form-group">
+                    <label for="name" class="required">اسم المنتج</label>
+                    <input type="text" id="name" required placeholder="مثال: USB C Hub 10-in-1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="price" class="required">السعر ($)</label>
+                    <input type="number" id="price" step="0.01" min="0" required placeholder="مثال: 25.99">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description" class="required">الوصف</label>
+                    <textarea id="description" required placeholder="أدخل وصفاً مفصلاً للمنتج..."></textarea>
+                    <p class="info-note">يمكنك استخدام &lt;br&gt; للسطر الجديد</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="images" class="required">صور المنتج</label>
+                    <p class="info-note">أول صورة ستكون الصورة الرئيسية في الصفحة الرئيسية</p>
+                    <div id="images-container">
+                        <input type="text" class="image-url" placeholder="أدخل رابط الصورة (URL)">
+                    </div>
+                    <button type="button" class="add-btn" onclick="addImageField()">+ إضافة صورة أخرى</button>
+                    <div id="image-preview-container" class="image-preview-container"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>الألوان (اختياري)</label>
+                    <div id="colors-container">
+                        <!-- سيتم إضافة حقول الألوان هنا -->
+                    </div>
+                    <button type="button" class="add-btn" onclick="addColorField()">+ إضافة لون</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>المواصفات (اختياري)</label>
+                    <div id="specs-container">
+                        <!-- سيتم إضافة حقول المواصفات هنا -->
+                    </div>
+                    <button type="button" class="add-btn" onclick="addSpecField()">+ إضافة مواصفة</button>
+                </div>
+                
+                <div class="form-actions">
+                    <a href="manage-products.html" class="btn btn-secondary">رجوع للإدارة</a>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">حفظ المنتج</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // التحقق من تسجيل الدخول
+        function checkAdminLogin() {
+            const loggedIn = localStorage.getItem('adminLoggedIn');
+            const loginTime = localStorage.getItem('adminLoginTime');
+            const now = new Date().getTime();
+            
+            if (!loggedIn || loggedIn !== 'true' || !loginTime || (now - loginTime) > 8 * 60 * 60 * 1000) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminLoginTime');
+                window.location.href = 'admin-login.html';
+                return false;
+            }
+            return true;
+        }
+        
+        // تحقق من الدخول عند التحميل
+        if (!checkAdminLogin()) {
+            // سيتم التوجيه تلقائياً
+        }
+        
+        // تحقق مما إذا كنا في وضع التعديل
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        let isEditMode = !!productId;
+        let editProductId = isEditMode ? parseInt(productId) : null;
+        
+        if (isEditMode) {
+            document.getElementById('page-title').textContent = 'تعديل المنتج';
+            document.getElementById('submitBtn').textContent = 'تحديث المنتج';
+        }
+        
+        // دالة لإضافة حقل صورة جديد
+        function addImageField() {
+            const container = document.getElementById('images-container');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'image-url';
+            input.placeholder = 'أدخل رابط الصورة (URL)';
+            input.oninput = updateImagePreviews;
+            container.appendChild(input);
+        }
+        
+        // دالة لتحديث معاينة الصور
+        function updateImagePreviews() {
+            const container = document.getElementById('image-preview-container');
+            const inputs = document.querySelectorAll('.image-url');
+            container.innerHTML = '';
+            
+            inputs.forEach((input, index) => {
+                if (input.value.trim()) {
+                    const preview = document.createElement('div');
+                    preview.className = 'image-preview';
+                    preview.innerHTML = `
+                        <img src="${input.value}" alt="معاينة الصورة ${index + 1}" 
+                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:#333;display:flex;align-items:center;justify-content:center;color:#888\'>خطأ في الصورة</div>'">
+                        <button type="button" class="remove-image" onclick="removeImage(${index})">×</button>
+                    `;
+                    container.appendChild(preview);
+                }
+            });
+        }
+        
+        // دالة لإزالة صورة
+        function removeImage(index) {
+            const inputs = document.querySelectorAll('.image-url');
+            if (inputs[index]) {
+                inputs[index].value = '';
+                updateImagePreviews();
+            }
+        }
+        
+        // دالة لإضافة حقل لون جديد
+        function addColorField(colorName = '', colorCode = '#000000') {
+            const container = document.getElementById('colors-container');
+            const colorDiv = document.createElement('div');
+            colorDiv.className = 'color-option';
+            colorDiv.innerHTML = `
+                <input type="color" class="color-code" value="${colorCode}" style="width: 50px; height: 40px;">
+                <input type="text" class="color-name" placeholder="اسم اللون" value="${colorName}">
+                <div class="color-preview" style="background-color: ${colorCode}"></div>
+                <button type="button" class="remove-color" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            // تحديث معاينة اللون عند التغيير
+            const colorInput = colorDiv.querySelector('.color-code');
+            const preview = colorDiv.querySelector('.color-preview');
+            colorInput.addEventListener('input', function() {
+                preview.style.backgroundColor = this.value;
+            });
+            
+            container.appendChild(colorDiv);
+        }
+        
+        // دالة لإضافة حقل مواصفات جديد
+        function addSpecField(name = '', value = '') {
+            const container = document.getElementById('specs-container');
+            const specDiv = document.createElement('div');
+            specDiv.className = 'spec-row';
+            specDiv.innerHTML = `
+                <input type="text" class="spec-name" placeholder="اسم المواصفة" value="${name}">
+                <input type="text" class="spec-value" placeholder="القيمة" value="${value}">
+                <button type="button" class="remove-color" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(specDiv);
+        }
+        
+        // دالة لعرض رسالة
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // تحميل بيانات المنتج للتعديل
+        if (isEditMode) {
+            try {
+                const products = JSON.parse(localStorage.getItem('avenir_products')) || [];
+                const product = products.find(p => p.id === editProductId);
+                
+                if (product) {
+                    document.getElementById('name').value = product.name || '';
+                    document.getElementById('price').value = product.price || '';
+                    document.getElementById('description').value = product.description || '';
+                    
+                    // تحميل الصور
+                    const imagesContainer = document.getElementById('images-container');
+                    imagesContainer.innerHTML = '';
+                    if (product.images && product.images.length > 0) {
+                        product.images.forEach((img, index) => {
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.className = 'image-url';
+                            input.value = img;
+                            input.oninput = updateImagePreviews;
+                            imagesContainer.appendChild(input);
+                        });
+                    } else {
+                        addImageField();
+                    }
+                    updateImagePreviews();
+                    
+                    // تحميل الألوان
+                    if (product.colors && product.colors.length > 0) {
+                        product.colors.forEach(color => {
+                            addColorField(color.name, color.code);
+                        });
+                    }
+                    
+                    // تحميل المواصفات
+                    if (product.specs && product.specs.length > 0) {
+                        product.specs.forEach(spec => {
+                            addSpecField(spec.name, spec.value);
+                        });
+                    }
+                } else {
+                    showMessage('المنتج غير موجود', 'error');
+                }
+            } catch (e) {
+                showMessage('خطأ في تحميل بيانات المنتج', 'error');
+            }
+        }
+        
+        // معالجة حفظ النموذج
+        document.getElementById('product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!checkAdminLogin()) return;
+            
+            // جمع بيانات المنتج
+            const name = document.getElementById('name').value.trim();
+            const price = document.getElementById('price').value.trim();
+            const description = document.getElementById('description').value.trim();
+            
+            // التحقق من البيانات الأساسية
+            if (!name || !price || !description) {
+                showMessage('الرجاء ملء جميع الحقول الإلزامية', 'error');
+                return;
+            }
+            
+            // جمع الصور
+            const imageInputs = document.querySelectorAll('.image-url');
+            const images = Array.from(imageInputs)
+                .map(input => input.value.trim())
+                .filter(url => url !== '');
+            
+            if (images.length === 0) {
+                showMessage('الرجاء إضافة صورة واحدة على الأقل', 'error');
+                return;
+            }
+            
+            // جمع الألوان
+            const colorDivs = document.querySelectorAll('.color-option');
+            const colors = Array.from(colorDivs).map(div => ({
+                name: div.querySelector('.color-name').value.trim(),
+                code: div.querySelector('.color-code').value
+            })).filter(color => color.name !== '');
+            
+            // جمع المواصفات
+            const specRows = document.querySelectorAll('.spec-row');
+            const specs = Array.from(specRows).map(row => ({
+                name: row.querySelector('.spec-name').value.trim(),
+                value: row.querySelector('.spec-value').value.trim()
+            })).filter(spec => spec.name !== '' && spec.value !== '');
+            
+            // إنشاء كائن المنتج مع البيانات المضافة
+            const product = {
+                id: isEditMode ? editProductId : Date.now(),
+                name,
+                price,
+                description: description.replace(/\n/g, '<br>'),
+                images,
+                mainImage: images[0], // الصورة الرئيسية للعرض في الصفحة الرئيسية
+                specs,
+                colors,
+                createdAt: isEditMode ? undefined : new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            // حفظ المنتج
+            try {
+                let products = [];
+                const stored = localStorage.getItem('avenir_products');
+                if (stored) {
+                    products = JSON.parse(stored);
+                }
+                
+                if (isEditMode) {
+                    // تحديث المنتج الموجود
+                    const index = products.findIndex(p => p.id === editProductId);
+                    if (index !== -1) {
+                        products[index] = product;
+                        showMessage('تم تحديث المنتج بنجاح', 'success');
+                    } else {
+                        products.push(product);
+                        showMessage('تم إضافة المنتج بنجاح', 'success');
+                    }
+                } else {
+                    // إضافة منتج جديد
+                    products.push(product);
+                    showMessage('تم إضافة المنتج بنجاح', 'success');
+                }
+                
+                localStorage.setItem('avenir_products', JSON.stringify(products));
+                
+                // التوجيه بعد الحفظ
+                setTimeout(() => {
+                    window.location.href = `manage-products.html?${isEditMode ? 'updated=true' : 'saved=true'}`;
+                }, 1500);
+                
+            } catch (error) {
+                showMessage('حدث خطأ في حفظ المنتج: ' + error.message, 'error');
+            }
+        });
+        
+        // إضافة بعض الحقول الافتراضية عند التحميل
+        window.onload = function() {
+            if (!isEditMode) {
+                addImageField(); // حقل صورة إضافي
+            }
+        };
+    </script>
+</body>
+</html>

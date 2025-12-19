@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المنتجات - Avenir.Souq</title>
+    <style>
+        :root {
+            --black: #0B0B0B;
+            --dark-gray: #1E1E1E;
+            --gray: #2A2A2A;
+            --gold: #E5B839;
+            --light-gray: #888888;
+            --white: #F5F5F5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .header h1 {
+            color: var(--gold);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: var(--light-gray);
+            font-size: 1.1rem;
+        }
+        
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: var(--dark-gray);
+            border-radius: 8px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+        
+        .btn-primary:hover {
+            background-color: #d4a32f;
+        }
+        
+        .btn-edit {
+            background-color: #4a90e2;
+            color: white;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-logout {
+            background-color: #666;
+            color: white;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .product-card {
+            background-color: var(--dark-gray);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+        
+        .product-price {
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--light-gray);
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+        
+        .error {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .warning {
+            background-color: rgba(241, 196, 15, 0.2);
+            border: 1px solid #f1c40f;
+            color: #f1c40f;
+        }
+        
+        .product-id {
+            color: var(--light-gray);
+            font-size: 0.8rem;
+            font-family: monospace;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛠️ إدارة المنتجات</h1>
+            <p>لوحة التحكم الخاصة بإدارة منتجات المتجر</p>
+        </div>
+        
+        <div id="message" class="message" style="display: none;"></div>
+        
+        <div class="actions-bar">
+            <div class="stats">
+                <span id="products-count">0</span> منتج في النظام
+            </div>
+            <div>
+                <a href="index.html" class="btn" style="background-color: #444; color: white; margin-left: 10px;">
+                    عرض المتجر
+                </a>
+                <a href="add-product.html" class="btn btn-primary">+ إضافة منتج جديد</a>
+            </div>
+        </div>
+        
+        <div id="products-container" class="products-grid">
+            <!-- سيتم ملء المنتجات هنا بواسطة JavaScript -->
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid var(--gray);">
+            <button onclick="logout()" class="btn-logout">تسجيل الخروج</button>
+            <button onclick="clearAllProducts()" class="btn-delete" style="margin-right: 10px;">مسح جميع المنتجات</button>
+        </div>
+    </div>
+
+    <script>
+        // التحقق من تسجيل الدخول
+        function checkAdminLogin() {
+            const loggedIn = localStorage.getItem('adminLoggedIn');
+            const loginTime = localStorage.getItem('adminLoginTime');
+            const now = new Date().getTime();
+            
+            // إذا لم يسجل دخول أو مرت أكثر من 8 ساعات
+            if (!loggedIn || loggedIn !== 'true' || !loginTime || (now - loginTime) > 8 * 60 * 60 * 1000) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminLoginTime');
+                window.location.href = 'admin-login.html';
+                return false;
+            }
+            return true;
+        }
+        
+        // تحميل المنتجات من localStorage
+        function loadProducts() {
+            if (!checkAdminLogin()) return;
+            
+            let addedProducts = [];
+            try {
+                const stored = localStorage.getItem('avenir_products');
+                if (stored) {
+                    addedProducts = JSON.parse(stored);
+                    console.log('تم تحميل المنتجات للإدارة:', addedProducts);
+                }
+            } catch (e) {
+                showMessage('خطأ في تحميل المنتجات', 'error');
+                addedProducts = [];
+            }
+            
+            const container = document.getElementById('products-container');
+            const countElement = document.getElementById('products-count');
+            
+            countElement.textContent = addedProducts.length;
+            
+            if (addedProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>لا توجد منتجات مضافة</h3>
+                        <p>لم تقم بإضافة أي منتجات بعد.</p>
+                        <a href="add-product.html" class="btn btn-primary" style="margin-top: 20px;">إضافة أول منتج</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = addedProducts.map(product => `
+                <div class="product-card">
+                    <img src="${product.images && product.images[0] ? product.images[0] : 'placeholder.jpg'}" 
+                         alt="${product.name}" class="product-image"
+                         onerror="this.src='placeholder.jpg'">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price">$${product.price}</div>
+                        <small class="product-id">ID: ${product.id}</small>
+                        <p style="color: var(--light-gray); font-size: 0.9rem; margin: 10px 0;">
+                            ${(product.description || '').replace(/<br>/g, ' ').substring(0, 80)}...
+                        </p>
+                        <div class="product-actions">
+                            <a href="add-product.html?id=${product.id}" class="btn btn-edit">تعديل</a>
+                            <button onclick="deleteProduct(${product.id})" class="btn btn-delete">حذف</button>
+                            <a href="product-detail.html?id=${product.id}" style="color: var(--gold); text-decoration: none; margin-right: auto;">معاينة</a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // حذف منتج
+        function deleteProduct(id) {
+            if (confirm('⚠️ هل أنت متأكد من حذف هذا المنتج؟')) {
+                let products = [];
+                try {
+                    const stored = localStorage.getItem('avenir_products');
+                    if (stored) {
+                        products = JSON.parse(stored);
+                    }
+                } catch (e) {
+                    products = [];
+                }
+                
+                products = products.filter(product => product.id !== id);
+                localStorage.setItem('avenir_products', JSON.stringify(products));
+                
+                showMessage('تم حذف المنتج بنجاح', 'success');
+                loadProducts();
+            }
+        }
+        
+        // مسح جميع المنتجات
+        function clearAllProducts() {
+            if (confirm('⚠️⚠️ هل أنت متأكد من مسح جميع المنتجات؟ هذا الإجراء لا يمكن التراجع عنه!')) {
+                localStorage.removeItem('avenir_products');
+                showMessage('تم مسح جميع المنتجات', 'warning');
+                loadProducts();
+            }
+        }
+        
+        // تسجيل الخروج
+        function logout() {
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminLoginTime');
+            window.location.href = 'admin-login.html';
+        }
+        
+        // عرض رسائل
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        // عرض رسالة إذا كان هناك id في الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('saved') === 'true') {
+            showMessage('✅ تم حفظ المنتج بنجاح', 'success');
+        } else if (urlParams.get('updated') === 'true') {
+            showMessage('✏️ تم تحديث المنتج بنجاح', 'success');
+        }
+        
+        // تحميل المنتجات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+</html>

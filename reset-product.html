@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إعادة تعيين المنتجات</title>
+    <style>
+        body { font-family: Arial; padding: 20px; text-align: center; }
+        button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>إعادة تعيين المنتجات</h1>
+    
+    <button onclick="resetProducts()">مسح جميع المنتجات المضافة</button>
+    <button onclick="goBack()">رجوع</button>
+    
+    <script>
+        function resetProducts() {
+            if (confirm('هل أنت متأكد من مسح جميع المنتجات المضافة؟')) {
+                localStorage.removeItem('products');
+                alert('تم مسح جميع المنتجات المضافة بنجاح');
+            }
+        }
+        
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

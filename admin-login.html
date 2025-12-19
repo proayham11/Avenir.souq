@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دخول المسؤول - Avenir.Souq</title>
+    <style>
+        :root {
+            --black: #0B0B0B;
+            --dark-gray: #1E1E1E;
+            --gold: #E5B839;
+            --white: #F5F5F5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background-color: var(--dark-gray);
+            padding: 40px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 20px rgba(229, 184, 57, 0.1);
+        }
+        
+        .logo {
+            height: 50px;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            height: 100%;
+            filter: brightness(0) invert(1);
+        }
+        
+        h1 {
+            color: var(--gold);
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--white);
+            font-weight: 500;
+        }
+        
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--black);
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: var(--white);
+            font-size: 1rem;
+            font-family: monospace;
+        }
+        
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #d4a32f;
+        }
+        
+        .btn-secondary {
+            background-color: #444;
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .error {
+            color: #ff6b6b;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .note {
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 20px;
+        }
+        
+        .copyright {
+            color: #666;
+            font-size: 0.7rem;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="Avenir.Souq">
+        </div>
+        
+        <h1>🔒 دخول المسؤول</h1>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="password">كلمة المرور:</label>
+                <input type="password" id="password" required autocomplete="off">
+            </div>
+            
+            <button type="submit" class="btn">دخول</button>
+            
+            <div id="errorMessage" class="error">كلمة المرور غير صحيحة</div>
+        </form>
+        
+        <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+            العودة للمتجر
+        </button>
+        
+        <p class="note">هذه الصفحة للمسؤول فقط</p>
+        <p class="copyright">© 2025 Avenir.Souq - نظام إدارة داخلي</p>
+    </div>
+
+    <script>
+        // كلمة المرور (يمكن تغييرها)
+        const ADMIN_PASSWORD = "Avenir2025";
+        
+        // التحقق من الدخول السابق
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            window.location.href = 'manage-products.html';
+        }
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (password === ADMIN_PASSWORD) {
+                // حفظ حالة الدخول
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminLoginTime', new Date().getTime());
+                
+                // التوجه لصفحة الإدارة
+                window.location.href = 'manage-products.html';
+            } else {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = '❌ كلمة المرور غير صحيحة';
+                
+                // اهتزاز الحقل
+                document.getElementById('password').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.getElementById('password').style.animation = '';
+                }, 500);
+            }
+        });
+        
+        // إضافة تأثير الهز
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

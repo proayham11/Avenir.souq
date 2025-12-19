@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">تحميل المنتج...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #0B0B0B;
+            --dark-gray: #1E1E1E;
+            --gray: #2A2A2A;
+            --gold: #E5B839;
+            --light-gray: #888888;
+            --white: #F5F5F5;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            background-color: var(--black);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            height: 80px;
+            border-bottom: 1px solid var(--dark-gray);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+        
+        .logo img {
+            height: 100%;
+            width: auto;
+        }
+        
+        .nav ul {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--light-gray);
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .product-page {
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .main-image-container {
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            background-color: var(--dark-gray);
+        }
+
+        #main-product-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: zoom-in;
+            min-height: 400px;
+            object-fit: contain;
+        }
+
+        .thumbnail-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .thumbnail {
+            width: 70px;
+            height: 70px;
+            min-width: 70px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            background-color: var(--dark-gray);
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .thumbnail.active {
+            border-color: var(--gold);
+        }
+
+        .product-details-content .name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .product-details-content .price {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 30px;
+            display: block;
+        }
+        
+        .product-details-content .description {
+            color: var(--light-gray);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .specs-list {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: var(--dark-gray);
+            border-radius: 8px;
+        }
+
+        .specs-list h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .specs-list ul li {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--gray);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+        }
+        
+        .specs-list ul li:last-child {
+            border-bottom: none;
+        }
+        
+        #error-message {
+            text-align: center;
+            padding: 100px 0;
+            color: #ff6b6b;
+            font-size: 1.5rem;
+        }
+
+        .color-options {
+            margin-bottom: 25px;
+        }
+
+        .color-options h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .color-swatches {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--gray);
+            box-shadow: 0 0 0 2px var(--black);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .color-swatch.active {
+            border-color: var(--gold);
+            transform: scale(1.1);
+        }
+
+        .whatsapp-button {
+            display: inline-block;
+            background-color: #25D366;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .whatsapp-button:hover {
+            background-color: #1da851;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 100px 0;
+            color: var(--light-gray);
+            font-size: 1.2rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--gold);
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 992px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            #main-product-image {
+                min-height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav {
+                position: fixed;
+                top: 80px;
+                right: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: var(--black);
+                border-top: 1px solid var(--gray);
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                padding-bottom: 20px;
+                z-index: 999;
+            }
+
+            .nav.active {
+                transform: translateX(0);
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Avenir.Souq">
+            </div>
+            
+            <nav class="nav" id="mainNav">
+                <ul>
+                    <li><a href="index.html#products">المنتجات المميزة</a></li>
+                    <li><a href="index.html#categories">الفئات</a></li>
+                    <li><a href="index.html#trust">لماذا نحن</a></li>
+                    <li><a href="index.html#contact">اتصل بنا</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <a href="https://wa.me/963964515662" target="_blank" 
+                   style="display: inline-block; background-color: #25D366; color: #ffffff !important; text-decoration: none; padding: 8px 20px; border-radius: 50px; font-weight: bold; font-size: 14px; margin-left: 8px;">
+                    تواصل معنا
+                </a>
+                
+                
+                <button class="menu-toggle" id="menuToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 6H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 18H21" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="product-page container">
+        <a href="index.html" class="back-link">← العودة للمنتجات</a>
+        <div id="product-content" class="loading">
+            جاري تحميل بيانات المنتج...
+        </div>
+        <div id="error-message" style="display: none;"></div>
+    </main>
+     
+    <footer class="footer" id="contact">
+        <div class="container">
+            <p style="text-align: center; color: var(--light-gray); padding: 20px 0; border-top: 1px solid var(--gray); margin-top: 40px;">
+                © 2025 Avenir.Souq. جميع الحقوق محفوظة.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // تعريف دالة تغيير الصورة الرئيسية
+        function changeMainImage(src, element) {
+            const mainImg = document.getElementById('main-product-image');
+            if (mainImg) {
+                mainImg.src = src;
+            }
+            
+            // إزالة Active Class من كل الصور المصغرة
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            
+            // إضافة Active Class للصورة التي تم الضغط عليها
+            if (element) {
+                element.classList.add('active');
+            }
+        }
+
+        // قائمة بيانات جميع المنتجات الأساسية
+        const defaultProducts = [
+            
+        ];
+
+        // تحميل المنتجات المضافة من localStorage
+        let allProducts = [...defaultProducts];
+        try {
+            const addedProducts = JSON.parse(localStorage.getItem('avenir_products')) || [];
+            if (addedProducts.length > 0) {
+                allProducts = [...defaultProducts, ...addedProducts];
+                console.log('تم تحميل المنتجات المضافة:', addedProducts.length);
+            }
+        } catch (e) {
+            console.log('لا توجد منتجات مضافة');
+        }
+
+        // دالة لتحديث رابط واتساب
+        function updateWhatsappLink(productName, price, colorName) {
+            const linkElement = document.getElementById('whatsappLink');
+            if (linkElement) {
+                let message = `أرغب في شراء المنتج: ${productName} - $${price}`;
+                if (colorName) {
+                    message += `\nاللون المختار: ${colorName}`;
+                }
+                const url = `https://wa.me/963964515662?text=${encodeURIComponent(message)}`;
+                linkElement.href = url;
+            }
+        }
+
+        // دالة لتغيير اللون عند الضغط عليه
+        function selectColor(colorName, element) {
+            // إزالة Active Class من كل الألوان
+            document.querySelectorAll('.color-swatch').forEach(swatch => {
+                swatch.classList.remove('active');
+            });
+            
+            // إضافة Active Class للون الذي تم الضغط عليه
+            element.classList.add('active');
+            
+            // تحديث عرض اسم اللون على الشاشة
+            const displayElement = document.getElementById('selectedColorDisplay');
+            if (displayElement) {
+                displayElement.textContent = colorName;
+            }
+
+            // الحصول على بيانات المنتج لتحديث رابط الواتساب
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id')); 
+            const product = allProducts.find(p => p.id === productId);
+
+            if (product) {
+                updateWhatsappLink(product.name, product.price, colorName);
+            }
+        }
+
+        // الدالة الرئيسية لتحميل تفاصيل المنتج
+        function loadProductDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id')); 
+            const product = allProducts.find(p => p.id === productId);
+
+            const contentDiv = document.getElementById('product-content');
+            const errorDiv = document.getElementById('error-message');
+            const pageTitle = document.getElementById('pageTitle');
+            
+            if (product) {
+                // تأكد من وجود صور للمنتج
+                if (!product.images || product.images.length === 0) {
+                    product.images = ['placeholder.jpg'];
+                }
+                
+                let selectedColorName = product.colors && product.colors.length > 0 ? product.colors[0].name : '';
+
+                // بناء قائمة المواصفات
+                const specsHtml = product.specs && product.specs.length > 0 
+                    ? product.specs.map(spec => `
+                        <li>
+                            <span class="spec-name">${spec.name}:</span> 
+                            <span class="spec-value">${spec.value}</span>
+                        </li>
+                    `).join('')
+                    : '<li style="color: var(--light-gray); font-style: italic;">لا توجد مواصفات مضافة</li>';
+
+                // بناء معرض الصور المصغرة
+                const thumbnailsHtml = product.images.map((imgUrl, index) => `
+                    <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="changeMainImage('${imgUrl}', this)">
+                        <img src="${imgUrl}" alt="صورة مصغرة ${index + 1}" 
+                             onerror="this.src='placeholder.jpg'">
+                    </div>
+                `).join('');
+
+                // بناء خيارات الألوان إذا كانت موجودة
+                let colorsHtml = '';
+                if (product.colors && product.colors.length > 0) {
+                    colorsHtml = `
+                        <div class="color-options">
+                            <h3>اللون: <span id="selectedColorDisplay">${selectedColorName}</span></h3>
+                            <div class="color-swatches">
+                                ${product.colors.map((color, index) => `
+                                    <div class="color-swatch ${index === 0 ? 'active' : ''}" 
+                                         style="background-color: ${color.code};" 
+                                         data-color-name="${color.name}"
+                                         onclick="selectColor('${color.name}', this)">
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // بناء الهيكل الأساسي لصفحة المنتج
+                contentDiv.innerHTML = `
+                    <div class="product-layout">
+                        <div class="product-images">
+                            <div class="main-image-container">
+                                <img id="main-product-image" src="${product.images[0]}" 
+                                     alt="صورة ${product.name}"
+                                     onerror="this.src='placeholder.jpg'">
+                            </div>
+                            <div class="thumbnail-gallery">
+                                ${thumbnailsHtml}
+                            </div>
+                        </div>
+                        
+                        <div class="product-details-content">
+                            <h1 class="name">${product.name}</h1>
+                            <span class="price">$${product.price}</span>
+                            
+                            <div class="description">
+                                ${product.description}
+                            </div>
+                            
+                            ${colorsHtml}
+                            
+                            <a id="whatsappLink" href="" target="_blank" class="whatsapp-button">
+                               💬 تواصل للشراء عبر واتساب
+                            </a>
+                            
+                            <div class="specs-list">
+                                <h3>المواصفات التقنية</h3>
+                                <ul>
+                                    ${specsHtml}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // تحديث عنوان الصفحة
+                pageTitle.textContent = product.name;
+                
+                // تحديث رابط الواتساب
+                updateWhatsappLink(product.name, product.price, selectedColorName);
+
+            } else {
+                // عرض رسالة الخطأ إذا لم يتم العثور على المنتج
+                contentDiv.innerHTML = '';
+                errorDiv.innerHTML = `
+                    <h2>⚠️ المنتج غير موجود</h2>
+                    <p style="margin-top: 20px;">عذراً، المنتج الذي تبحث عنه غير موجود أو تم حذفه.</p>
+                    <a href="index.html" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: var(--gold); color: var(--black); border-radius: 5px; text-decoration: none;">
+                        العودة للمنتجات
+                    </a>
+                `;
+                errorDiv.style.display = 'block';
+                pageTitle.textContent = "منتج غير موجود";
+            }
+            
+            // تشغيل كود القائمة المنبثقة للـ Header
+            const menuToggle = document.getElementById('menuToggle');
+            const mainNav = document.getElementById('mainNav');
+            if (menuToggle && mainNav) {
+                menuToggle.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                });
+            }
+        }
+
+        // تشغيل الدالة عند تحميل الصفحة
+        window.onload = loadProductDetails;
+    </script>
+</body>
+</html>
