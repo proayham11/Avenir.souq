@@ -3,10 +3,9 @@
 // ============================================
 
 window.UPLOAD_CONFIG = {
-    // سيتم تعيينه تلقائياً بناءً على الموقع الحالي
-    API_URL: window.location.origin + '/api',
+    API_URL: 'http://localhost:3000/api',  // ← Port 3000!
     MAX_FILES: 10,
-    MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
+    MAX_FILE_SIZE: 5 * 1024 * 1024,
     ALLOWED_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
 };
 
@@ -76,4 +75,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // جعل الدوال متاحة عالمياً للاختبار
+
 window.verifyServerConnection = verifyServerConnection;
