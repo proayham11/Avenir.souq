@@ -889,7 +889,7 @@
             <!-- سيتم ملؤها بالجافاسكريبت -->
         </div>
         <div style="text-align: center; margin-top: 20px; color: var(--light-gray);">
-            <span id="productsCount">جاري تحميل المنتجات...</span>
+            <span id="productsCount"></span>
         </div>
     </section>
 
@@ -1138,56 +1138,8 @@
         // ==============================
         // نظام عرض المنتجات
         // ==============================
-        function loadAndDisplayProducts() {
-            console.log('جاري تحميل المنتجات...');
-            
-            const defaultProducts = [];
-            
-            let addedProducts = [];
-            try {
-                const stored = localStorage.getItem('avenir_products');
-                if (stored) {
-                    addedProducts = JSON.parse(stored);
-                    console.log('تم تحميل المنتجات المضافة:', addedProducts.length);
-                }
-            } catch (e) {
-                console.log('لا توجد منتجات مضافة');
-            }
-            
-            const allProducts = [...defaultProducts, ...addedProducts];
-            const container = document.getElementById('productsContainer');
-            const counter = document.getElementById('productsCount');
-            
-            if (container) {
-                let productsHTML = '';
-                
-                allProducts.forEach(product => {
-                    let mainImage = product.mainImage || 
-                                  product.image || 
-                                  (product.images && product.images.length > 0 ? product.images[0] : 'placeholder.jpg');
+        
                     
-                    productsHTML += `
-                        <a href="product-detail.html?id=${product.id}" class="product-card">
-                            <div class="product-image">
-                                <img src="${mainImage}" alt="${product.name}" 
-                                     onerror="this.src='placeholder.jpg'"
-                                     loading="lazy">
-                            </div>
-                            <div class="product-info">
-                                <h3 class="product-name">${product.name}</h3>
-                                <span class="product-price">$${product.price}</span>
-                            </div>
-                        </a>
-                    `;
-                });
-                
-                container.innerHTML = productsHTML;
-                
-                if (counter) {
-                    counter.textContent = `${allProducts.length} منتج`;
-                }
-            }
-        }
     </script>
     
     <script>
@@ -1236,4 +1188,5 @@
 </body>
 
 </html>
+
 
